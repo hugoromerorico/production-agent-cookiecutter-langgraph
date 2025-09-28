@@ -1,0 +1,10 @@
+{
+  "dependencies": ["."],
+  "graphs": {
+    "chat": "./app/application/workflows/chat/graph.py:graph",
+    "wf1": "./app/application/workflows/wf1/graph.py:graph"
+  },
+  "env": ".env",
+  "image_distro": "wolfi",
+  "module": "rendered-project"
+}

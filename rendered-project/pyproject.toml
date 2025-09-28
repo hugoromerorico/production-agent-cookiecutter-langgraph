@@ -1,0 +1,20 @@
+[project]
+name = "rendered-project"
+version = "0.1.0"
+description = "This is the rendered version of the cookiecutter. The project you obtain when using the command cookiecutter on the template provided in this repository."
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "fastapi[standard]>=0.117.1",
+    "langgraph>=0.6.7",
+    "langgraph-cli[inmem]>=0.4.2",
+    "loguru>=0.7.3",
+    "pydantic>=2.11.9",
+    "pydantic-settings>=2.11.0",
+    "python-dotenv>=1.1.1",
+]
+
+[dependency-groups]
+dev = [
+    "ipykernel>=6.30.1",
+]
