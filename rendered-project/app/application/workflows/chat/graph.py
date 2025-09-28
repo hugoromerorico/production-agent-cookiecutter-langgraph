@@ -3,14 +3,14 @@ from functools import lru_cache
 from loguru import logger
 
 from langgraph.graph import END, START, StateGraph
-from app.application.workflows.chat.state import ConversationState, ContextSchema
+from app.application.workflows.chat.state import ConversationState
 from langgraph.checkpoint.memory import InMemorySaver
 from app.application.workflows.chat.nodes import chat_node
 
 @lru_cache(maxsize=1)
 def create_workflow_graph():
     """Creates a single-node graph with the agent."""
-    graph_builder = StateGraph(ConversationState, context_schema=ContextSchema)
+    graph_builder = StateGraph(ConversationState)
     
     graph_builder.add_node("chat_node", chat_node)
     graph_builder.add_edge(START, "chat_node")
