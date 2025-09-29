@@ -2,12 +2,12 @@
 from fastapi import FastAPI
 from loguru import logger
 import sys
-import os
 
 # Route imports
-from app.routes import system
+from app.routes import system, chat, wf1
 from app.config.config import settings
-from app.infrastructure.llm_service import LLMService
+from app.application.chat import Chat
+from app.application.use_case import UseCase
 import uvicorn
 
 
@@ -19,8 +19,11 @@ def setup_dependencies(app: FastAPI) -> FastAPI:
 
     """Setup dependencies for the application."""
     # Infrastructure layer
-    app.state.llm_service = LLMService()
+    app.state.chat = Chat()
+    app.state.use_case = UseCase()
     app.include_router(system.router)
+    app.include_router(chat.router)
+    app.include_router(wf1.router)
 
     # Application layer
     return app

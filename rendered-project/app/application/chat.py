@@ -1,27 +1,23 @@
 from langgraph.checkpoint.memory import InMemorySaver
 from app.application.workflows.chat.graph import get_graph
 from langgraph.types import StateSnapshot
-from app.application.workflows.chat.state import ContextSchema
-from app.infrastructure.llm_service import LLMService
-
+from loguru import logger
+from langchain_core.messages import AnyMessage
 
 class Chat:
     def __init__(self):
-        self.llm_service = LLMService()
         self.checkpointer = InMemorySaver()
         self.graph = get_graph(self.checkpointer)
-        self.context = ContextSchema(llm_service=self.llm_service)
 
 
-    def execute(self,user_message: str, user_id: str):
+    def execute(self,user_message: str, thread_id: str):
         result = self.graph.invoke(
                     {"messages": [{"role": "user", "content": user_message}]},
-                    {"configurable": {"thread_id": user_id}, "context": self.context},
+                    {"configurable": {"thread_id": thread_id}},
                 )
         return result
     
-    def get_state(self, user_id: str):
-        config = {"configurable": {"thread_id": user_id}}
+    def get_state(self, thread_id: str) -> list[AnyMessage]:
+        config = {"configurable": {"thread_id": thread_id}}
         snapshot: StateSnapshot = self.graph.get_state(config)
-        return snapshot
-
+        return snapshot.values.get("messages", [])
